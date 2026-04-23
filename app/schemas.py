@@ -1,3 +1,4 @@
+from pydantic import Field
 from typing import Optional
 from pydantic import EmailStr
 from pydantic.v1 import EmailError
@@ -21,6 +22,13 @@ class Post(PostBase):
     user_id:int
     user:UserResponse
 
+    class Config:
+        from_attributes=True
+
+class PostOut(BaseModel):
+    Post: Post        # capital P — must match
+    votes: int
+    
     class Config:
         from_attributes=True
 
@@ -50,3 +58,8 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     id:Optional[int]=None
     
+
+class Vote(BaseModel):
+    post_id:int
+    vote_dir:int=Field(ge=0,le=1)
+
